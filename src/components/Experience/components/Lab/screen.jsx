@@ -23,7 +23,7 @@ const modelUrl = "/screen.glb";
 const Screen = () => {
   const group = useRef();
   const { scene } = useGLTF(modelUrl);
-  const { camera } = useThree();
+  const { scene: scene2, camera } = useThree();
 
   const dataPages = useMemo(() => {
     return assets.filter((asset) => asset.name === "experiments");
@@ -63,28 +63,72 @@ const Screen = () => {
   const mouse = useScreenCursor();
   const raycaster = useMemo(() => new THREE.Raycaster(), []);
   const isHovering = useRef(false);
+  const pivot = useRef(null);
 
   useEffect(() => {
     scene.traverse((child) => {
       // console.log(child.name);
       if (child.name === "Screen") {
         child.material = screenMaterial;
+        const box = new THREE.Box3().setFromObject(child);
+        const center = box.getCenter(new THREE.Vector3());
+
+        center.y -= 0.5;
+
+        pivot.current = new THREE.Object3D();
+        pivot.current.position.copy(center);
+
+        child.position.sub(center);
+
+        // add mesh into pivot
+        pivot.current.add(child);
+        scene2.add(pivot.current);
+
         return;
       }
     });
   }, [scene]);
 
   useEffect(() => {
+    // now scale pivot instead of mesh
+
     const clickHandler = () => {
       if (isHovering.current) {
         // window.open(pages[index].pageUrl, "_blank");
       }
     };
 
+    const resize = () => {
+      // group.current.scale.set(0.2, 0.2, 0.2).multiplyScalar(1);
+
+      // console.log(pivot);
+
+      pivot.current.scale.setScalar(0.675);
+
+      const width = window.innerWidth;
+      // console.log(width);
+
+      if (width > 768) {
+        {
+          pivot.current.scale.setScalar(1);
+          if (width > 1280) {
+            // group.current.scale.set(1, 1, 1).multiplyScalar(1);
+          }
+          if (width > 1920) {
+            // group.current.scale.set(1, 1, 1).multiplyScalar(1);
+          }
+        }
+      }
+    };
+
+    resize();
+    window.addEventListener("resize", resize);
+
     window.addEventListener("click", clickHandler);
 
     return () => {
       window.removeEventListener("click", clickHandler);
+      window.removeEventListener("resize", resize);
     };
   }, [index]);
 
@@ -125,7 +169,7 @@ const Screen = () => {
     //
     raycaster.setFromCamera(mouse.current, camera);
 
-    const intersects = raycaster.intersectObjects(group.current.children, true);
+    const intersects = raycaster.intersectObjects(pivot.current.children, true);
     // console.log(intersects);
 
     if (intersects.length > 0 && !isHovering.current) {

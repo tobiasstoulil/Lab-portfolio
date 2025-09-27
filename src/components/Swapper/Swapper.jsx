@@ -24,6 +24,8 @@ const Swapper = () => {
     return assets.filter((asset) => asset.name === "experiments");
   });
 
+  const liveRef = useRef(null);
+  const liveTextRef = useRef(null);
   const swapperRef = useRef(null);
   const titleRef1 = useRef(null);
   const titleRef2 = useRef(null);
@@ -78,54 +80,86 @@ const Swapper = () => {
     titleRef1.current.textContent = pages[0].swapperContent[0];
     titleRef2.current.textContent = pages[0].swapperContent[0];
 
-    setTimeout(() => {
-      splitTextElements(titleRef1.current, "chars");
-      splitTextElements(titleRef2.current, "chars");
+    splitTextElements(titleRef1.current, "chars");
+    splitTextElements(titleRef2.current, "chars");
+    splitTextElements(liveTextRef.current, "chars");
 
-      gsap.set(titleRef1.current.querySelectorAll(".char span"), {
-        y: "-100%",
-        opacity: 0,
-      });
-      gsap.set(titleRef2.current.querySelectorAll(".char span"), {
-        y: "-100%",
-        opacity: 0,
-      });
+    gsap.set(titleRef1.current.querySelectorAll(".char span"), {
+      y: "-100%",
+      opacity: 0,
+    });
+    gsap.set(titleRef2.current.querySelectorAll(".char span"), {
+      y: "-100%",
+      opacity: 0,
+    });
+    gsap.set(liveTextRef.current.querySelectorAll(".char span"), {
+      y: "-100%",
+      opacity: 0,
+    });
 
-      gsap.set(swapperRef.current, {
-        opacity: 0,
-      });
+    gsap.set(swapperRef.current, {
+      opacity: 0,
+    });
 
-      isTransitioning.current = true;
-      const tl = gsap.timeline({
-        defaults: {
-          ease: "hop",
-          delay: 2,
-          onComplete: () => {
-            isTransitioning.current = false;
+    gsap.set(liveRef.current, {
+      opacity: 0,
+    });
+    const unsubscribe = useStats.subscribe(
+      (state) => state.scopeAnim,
+      (value, prevValue) => {
+        isTransitioning.current = true;
+        const tl = gsap.timeline({
+          defaults: {
+            ease: "hop",
+            delay: 2,
+            onComplete: () => {
+              isTransitioning.current = false;
+            },
           },
-        },
-      });
+        });
 
-      tl.to(
-        swapperRef.current,
-        {
-          opacity: 1,
-          duration: 0.75,
-        },
-        0.125
-      );
+        tl.to(
+          swapperRef.current,
+          {
+            opacity: 1,
+            duration: 0.75,
+          },
+          0.125
+        );
+        tl.to(
+          liveRef.current,
+          {
+            opacity: 1,
+            duration: 0.75,
+          },
+          0.3
+        );
 
-      tl.to(
-        titleRef1.current.querySelectorAll(".char span"),
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.75,
-          stagger: 0.05,
-        },
-        0
-      );
-    }, 250);
+        tl.to(
+          titleRef1.current.querySelectorAll(".char span"),
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.75,
+            stagger: 0.05,
+          },
+          0
+        );
+
+        tl.to(
+          liveTextRef.current.querySelectorAll(".char span"),
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.75,
+            stagger: 0.05,
+          },
+          0.175
+        );
+      }
+    );
+
+    return () => unsubscribe();
   }, []);
 
   useEffect(() => {
@@ -233,13 +267,13 @@ const Swapper = () => {
 
   return (
     <div
-      style={{ transformOrigin: "50% 100%" }}
-      className="relative z-40 min-w-fit max-w-fit scale-75 md:scale-100 flex flex-col gap-3 md:gap-3 items-end justify-center"
+      style={{ transformOrigin: "right bottom" }}
+      className="absolute right-0 bottom-0 z-40 min-w-fit max-w-fit scale-[0.75] md:scale-100 flex flex-col gap-3 md:gap-3 items-end justify-center"
     >
       <motion.div
         style={{
           opacity: 1,
-          willChange: "transform",
+          willChange: "transform, opacity",
           transformOrigin: "center center",
           cursor: "default",
           overscrollBehavior: "none",
@@ -293,7 +327,7 @@ const Swapper = () => {
                 },
               }}
             >
-              <h1 className="text-nowrap pointer-events-none antialiased text-[14px] !font-[500]">
+              <h1 className="min-w-fit text-nowrap pointer-events-none antialiased text-[14px] !font-[500]">
                 {page.swapperContent}
               </h1>
             </motion.div>
@@ -315,6 +349,14 @@ const Swapper = () => {
           className="h-[64px] w-[64px] flex flex-col items-center justify-center scale-100 md:scale-100 pointer-events-auto font-main"
         >
           <div
+            ref={liveRef}
+            style={{
+              opacity: 0,
+              willChange: "transform, opacity",
+              transformOrigin: "center center",
+              cursor: "default",
+              overscrollBehavior: "none",
+            }}
             className="absolute right-0 bottom-0 pointer-events-auto bg-[#fff] rounded-[330px] flex flex-row justify-end items-center gap-3 pl-5 pr-1.5 py-1.5 overflow-hidden
       border-[0px] border-[#b1b1b141] shadow-2xl 
       "
@@ -322,7 +364,10 @@ const Swapper = () => {
             {/*  */}
             <div className="w-fit h-full flex flex-col gap-[4px] items-start justify-center">
               <div className="flex items-start justify-center relative min-w-fit w-fit text-nowrap select-none pointer-events-auto text-[0.875rem] text-black !font-[700] uppercase">
-                <p className="relative h-full w-full min-w-fit flex items-start justify-center text-nowrap">
+                <p
+                  ref={liveTextRef}
+                  className="relative h-full w-full min-w-fit flex items-start justify-center text-nowrap"
+                >
                   live
                 </p>
               </div>
@@ -506,7 +551,7 @@ const Swapper = () => {
           </motion.div>
 
           {/*  */}
-          <div className="w-full h-full flex flex-col gap-[4px] items-start justify-center">
+          <div className="w-full h-full flex flex-col gap-[4px] min-w-fit items-start justify-center">
             <div className="flex items-start justify-center relative min-w-fit w-fit text-nowrap select-none pointer-events-auto text-[0.875rem] text-black !font-[700] uppercase">
               <p
                 ref={titleRef1}

@@ -9,6 +9,7 @@ import { cloneElement, useEffect, useMemo } from "react";
 import assets from "./assets";
 import Swapper from "./components/Swapper/Swapper";
 import gsap from "gsap";
+import Loader from "./components/Loader";
 
 import { CustomEase } from "gsap/CustomEase";
 import { Leva } from "leva";
@@ -24,7 +25,7 @@ const App = () => {
 
   return (
     <>
-      {/* <Loader /> */}
+      <Loader />
 
       <div
         style={{ overscrollBehavior: "none" }}

@@ -35,7 +35,9 @@ const HomePage = () => {
   }, []);
 
   const pageRef = useRef(null);
+  const headerRef = useRef(null);
   const titleRef = useRef(null);
+  const subtitleRef = useRef(null);
   const gripRef = useRef(null);
   const authorRef = useRef(null);
 
@@ -45,6 +47,85 @@ const HomePage = () => {
   const isWhite = true;
 
   useClickTrigger(() => setIsOpen(() => false));
+
+  useEffect(() => {
+    splitTextElements(titleRef.current, "chars");
+    splitTextElements(subtitleRef.current, "chars");
+
+    gsap.set(titleRef.current.querySelectorAll(".char span"), {
+      y: "-100%",
+      opacity: 0,
+    });
+    gsap.set(subtitleRef.current.querySelectorAll(".char span"), {
+      y: "-100%",
+      opacity: 0,
+    });
+
+    gsap.set(authorRef.current, {
+      opacity: 0,
+    });
+    gsap.set(headerRef.current, {
+      opacity: 0,
+    });
+
+    const unsubscribe = useStats.subscribe(
+      (state) => state.scopeAnim,
+      (value, prevValue) => {
+        // console.log(value);
+
+        const tl = gsap.timeline({
+          defaults: {
+            ease: "hop",
+            delay: 0.5,
+            onComplete: () => {},
+          },
+        });
+
+        tl.to(
+          authorRef.current,
+          {
+            opacity: 1,
+            duration: 0.75,
+          },
+          2
+        );
+
+        tl.to(
+          headerRef.current,
+          {
+            opacity: 1,
+            duration: 0.75,
+          },
+          1.125
+        );
+
+        tl.to(
+          titleRef.current.querySelectorAll(".char span"),
+          {
+            y: 0,
+            opacity: 1,
+            duration: 1.25,
+            stagger: 0.15,
+          },
+          0
+        );
+        tl.to(
+          subtitleRef.current.querySelectorAll(".char span"),
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.75,
+            stagger: 0.01,
+          },
+          0.725
+        );
+      }
+    );
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   return (
     <>
@@ -65,14 +146,17 @@ const HomePage = () => {
       >
         <div className="relative mx-auto w-full h-20 flex flex-row justify-between items-start">
           <div className="w-full flex flex-row justify-between items-start">
-            <div className="relative flex flex-col gap-1 md:gap-4 font-main">
+            <div className="relative flex flex-col gap-1 md:gap-3 font-main">
               <p
                 ref={titleRef}
-                className="translate-x-[-2px] md:translate-x-[-6px] normal-case text-white text-[4rem] md:text-[8rem] !font-[400] tracking-[-0.0375em] leading-[1.25] md:leading-[0.9]"
+                className="translate-x-[-2px] md:translate-x-[-6px] normal-case text-white text-[4rem] md:text-[8rem] !font-[400] tracking-[-0.0275em] leading-[1.25] md:leading-[0.9]"
               >
                 Lab
               </p>
-              <p className="max-w-[220px] md:max-w-[280px] normal-case text-white text-[0.75rem] md:text-[1rem] leading-[1.25] !font-[400] tracking-[-0.0375em]">
+              <p
+                ref={subtitleRef}
+                className="max-w-[220px] md:max-w-[280px] normal-case text-white text-[0.75rem] md:text-[1rem] leading-[1.1] !font-[400] tracking-[-0.0375em]"
+              >
                 Showcase of my latest projects, designs and experiments, more on{" "}
                 <span
                   onClick={() => window.open("https://x.com/tobias_stoulil")}
@@ -84,7 +168,11 @@ const HomePage = () => {
             </div>
 
             {/*  */}
-            <header className="mt-[18px] mr-2 flex items-center justify-center">
+            <header
+              ref={headerRef}
+              style={{ opacity: 0, willChange: "opacity" }}
+              className="mt-[18px] mr-2 flex items-center justify-center"
+            >
               <div
                 id="trigger"
                 className="flex flex-col items-center justify-center"
@@ -283,7 +371,7 @@ const HomePage = () => {
         </div>
         {/*  */}
 
-        <div className="w-full h-20 flex flex-row justify-between items-end">
+        <div className="relative w-full h-20 flex flex-row justify-between items-end">
           <p
             ref={authorRef}
             className="origin-bottom-left min-w-fit scale-[0.8275] text-white select-none pointer-events-auto text-[0.875rem] sm:text-[1rem] !font-[500] normal-case"

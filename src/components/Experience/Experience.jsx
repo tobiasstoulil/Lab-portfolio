@@ -12,9 +12,9 @@ import { Leva, useControls } from "leva";
 export default function Experience() {
   console.log("experience r");
 
-  const { bg } = useControls("bg", {
-    bg: "#141414",
-  });
+  // const { bg } = useControls("bg", {
+  //   bg: "#141414",
+  // });
 
   return (
     <>
@@ -29,7 +29,7 @@ export default function Experience() {
         <Suspense fallback={null}>
           <Scene />
         </Suspense>
-        {/* <color attach="background" args={[bg]} / */}
+        <color attach="background" args={["#a3a5ae"]} />
         {/* <mesh>
           <boxGeometry args={[1, 1, 1]} />
           <meshNormalMaterial />

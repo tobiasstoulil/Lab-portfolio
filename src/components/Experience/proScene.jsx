@@ -25,13 +25,13 @@ export default function Scene() {
 
   useEffect(() => {
     const resize = () => {
-      cameraRef.current.zoom = 120;
+      cameraRef.current.zoom = 140;
 
       const width = window.innerWidth;
       // console.log(width);
       if (width > 768) {
         {
-          cameraRef.current.zoom = 200;
+          cameraRef.current.zoom = 170;
           if (width > 1280) {
             cameraRef.current.zoom = 200;
           }
@@ -40,6 +40,8 @@ export default function Scene() {
           }
         }
       }
+
+      // cameraRef.current.zoom = 200;
 
       cameraRef.current.updateProjectionMatrix();
     };
@@ -54,25 +56,6 @@ export default function Scene() {
 
   return (
     <>
-      {/* <ambientLight intensity={0} color="#FFFFFF" />
-      <directionalLight
-        castShadow
-        position={lightPosition}
-        intensity={13}
-        color="#fff"
-      /> */}
-      {/* <Effects key={"moebius"}>
-        <moebiusPass
-          args={[
-            {
-              depthRenderTarget,
-              normalRenderTarget,
-              camera,
-            },
-          ]}
-        />
-      </Effects> */}
-
       {/* <mesh ref={fullScreenQuadRef}>
         <planeGeometry args={[2, 2]} />
         <FullScreenQuadMaterial />
@@ -90,8 +73,8 @@ export default function Scene() {
         <CustomEfComponent />
         <Bloom
           luminanceThreshold={5}
-          luminanceSmoothing={60}
-          intensity={0.275}
+          luminanceSmoothing={40}
+          intensity={0.325}
           levels={10}
           mipmapBlur
         />
