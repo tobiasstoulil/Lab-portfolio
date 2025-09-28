@@ -34,7 +34,7 @@ const Index = () => {
           onStart: () => {
             // gsap.set(".paragraph .line span", { y: "-100%" });
 
-            gsap.delayedCall(0.075, () => {
+            gsap.delayedCall(1.2, () => {
               handleScopeAnim();
             });
           },

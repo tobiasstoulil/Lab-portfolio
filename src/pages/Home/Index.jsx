@@ -146,7 +146,7 @@ const HomePage = () => {
       >
         <div className="relative mx-auto w-full h-20 flex flex-row justify-between items-start">
           <div className="w-full flex flex-row justify-between items-start">
-            <div className="relative flex flex-col gap-1 md:gap-3 font-main">
+            <div className="relative flex flex-col gap-1 md:gap-2.5 font-main">
               <p
                 ref={titleRef}
                 className="translate-x-[-2px] md:translate-x-[-6px] normal-case text-white text-[4rem] md:text-[8rem] !font-[400] tracking-[-0.0275em] leading-[1.25] md:leading-[0.9]"
@@ -160,7 +160,7 @@ const HomePage = () => {
                 Showcase of my latest projects, designs and experiments, more on{" "}
                 <span
                   onClick={() => window.open("https://x.com/tobias_stoulil")}
-                  className="cursor-pointer !font-[400] underline"
+                  className="cursor-pointer !font-[500] underline"
                 >
                   X
                 </span>

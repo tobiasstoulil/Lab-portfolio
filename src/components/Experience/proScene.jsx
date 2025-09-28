@@ -33,6 +33,9 @@ export default function Scene() {
         {
           cameraRef.current.zoom = 170;
           if (width > 1280) {
+            cameraRef.current.zoom = 170;
+          }
+          if (width > 1700) {
             cameraRef.current.zoom = 200;
           }
           if (width > 1920) {

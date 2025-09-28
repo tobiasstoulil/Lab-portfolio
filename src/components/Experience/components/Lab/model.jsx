@@ -41,8 +41,7 @@ const Model = () => {
   const pages = dataPages[0].items;
 
   const group = useRef();
-  const { animations, scene } = useGLTF(modelUrl);
-  const { actions, mixer } = useAnimations(animations, group);
+  const { scene } = useGLTF(modelUrl);
   const { camera } = useThree();
 
   const { colorStart, colorEnd } = useControls("color", {
@@ -173,7 +172,7 @@ const Model = () => {
   // const index =
   const cameraPosition = useRef(null);
   const cameraLookAt = useRef(null);
-  const isTransitioning = useRef(false);
+  const isTransitioning = useRef(true);
   const hasKeyboard = useRef(true);
   const mouse = useScreenCursor();
   const buttonRef = useRef(null);
@@ -231,7 +230,7 @@ const Model = () => {
         } else if (child.name.includes("Button")) {
           child.material = pressMaterial;
           buttonRef.current = child;
-          console.log(buttonRef.current);
+          // console.log(buttonRef.current);
           return;
         } else {
           child.material = propsMaterial;
@@ -241,7 +240,42 @@ const Model = () => {
         // child.visible = false;
       }
     });
-  }, [scene, actions]);
+
+    const cameraTl = gsap.timeline({ paused: true });
+
+    const unsubscribe = useStats.subscribe(
+      (state) => state.scopeAnim,
+      (value, prevValue) => {
+        if (cameraLookAt.current && cameraPosition.current) {
+          // console.log(camera);
+
+          gsap.from(camera, {
+            zoom: camera.zoom + 15,
+            ease: "power2.inOut",
+            delay: 0,
+            duration: 1.5,
+
+            onUpdate: () => {
+              // console.log(cameraRef.current.zoom, initialZoom.current);
+
+              camera.lookAt(cameraLookAt.current);
+              camera.updateProjectionMatrix();
+            },
+
+            onComplete: () => {
+              isTransitioning.current = false;
+              // isZoomed.current = true;
+            },
+          });
+        }
+      }
+    );
+
+    return () => {
+      unsubscribe();
+      cameraTl.kill();
+    };
+  }, [scene]);
 
   useEffect(() => {
     const tl = gsap.timeline({ paused: true });
