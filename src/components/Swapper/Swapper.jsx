@@ -357,8 +357,8 @@ const Swapper = () => {
               cursor: "default",
               overscrollBehavior: "none",
             }}
-            className="absolute right-0 bottom-0 pointer-events-auto bg-[#fff] rounded-[330px] flex flex-row justify-end items-center gap-3 pl-5 pr-1.5 py-1.5 overflow-hidden
-      border-[0px] border-[#b1b1b141] shadow-2xl 
+            className="absolute right-0 bottom-0 pointer-events-auto bg-[#fff] rounded-[330px] flex flex-row justify-end items-center gap-3 pl-5 pr-0 py-0 overflow-hidden
+      border-[4px] border-[#b1b1b141] shadow-2xl 
       "
           >
             {/*  */}
@@ -438,8 +438,8 @@ const Swapper = () => {
         className="scale-100 md:scale-100 pointer-events-auto font-main w-[264px]"
       >
         <div
-          className="pointer-events-none bg-[#fff] rounded-[330px] flex flex-row justify-between items-center gap-3 pl-1.5 pr-8 py-1.5 overflow-hidden
-      border-[0px] border-[#b1b1b141] shadow-2xl 
+          className="pointer-events-none bg-[#fff] rounded-[330px] flex flex-row justify-between items-center gap-3 pl-0 pr-8 py-0 overflow-hidden
+      border-[4px] border-[#b1b1b141] shadow-2xl 
       "
         >
           <div

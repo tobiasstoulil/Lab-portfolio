@@ -2,7 +2,7 @@ import { useRef, useEffect } from "react";
 import * as THREE from "three";
 
 export function useScreenCursor() {
-  const screenCursor = useRef(new THREE.Vector2(0, 0));
+  const screenCursor = useRef(new THREE.Vector2(0, 0.875));
 
   useEffect(() => {
     const updateCursor = (event) => {

@@ -360,7 +360,7 @@ const Model = () => {
 
     const mulFac = 1;
     const amountX = 0.5 * mulFac;
-    const amountY = 0.5 * mulFac;
+    const amountY = 0.25 * mulFac;
 
     const offsetX = amountX * mouse.current.x;
     const offsetY = amountY * -mouse.current.y;
