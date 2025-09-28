@@ -87,7 +87,7 @@ const HomePage = () => {
             opacity: 1,
             duration: 0.75,
           },
-          2
+          1.75
         );
 
         tl.to(
@@ -117,7 +117,7 @@ const HomePage = () => {
             duration: 0.75,
             stagger: 0.01,
           },
-          0.725
+          0.625
         );
       }
     );

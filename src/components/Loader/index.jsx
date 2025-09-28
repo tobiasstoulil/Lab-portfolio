@@ -25,7 +25,7 @@ const Index = () => {
 
   useEffect(() => {
     if (progress === 100) {
-      gsap.delayedCall(0.125, () => {
+      gsap.delayedCall(0.5, () => {
         gsap.to(textContainerRef.current, {
           opacity: 0,
           duration: 1,
@@ -42,8 +42,8 @@ const Index = () => {
 
         gsap.to(loaderRef.current, {
           opacity: 0,
-          duration: 1,
-          delay: 1.9,
+          duration: 0.75,
+          delay: 2,
           ease: "hop",
 
           onComplete: () => {
@@ -59,7 +59,7 @@ const Index = () => {
   return (
     <div
       ref={loaderRef}
-      // style={{ opacity: 0.98 }}
+      style={{ opacity: 0.9875 }}
       className="fixed z-[60] inset-0 h-[100svh] w-full flex justify-center items-center bg-white"
     >
       <div

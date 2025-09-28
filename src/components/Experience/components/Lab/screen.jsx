@@ -31,19 +31,23 @@ const Screen = () => {
   const pages = dataPages[0].items;
   const index = useStats((state) => state.index);
 
-  const imageTextures = useMemo(() => {
-    return pages.map((page) => {
-      const texture = new THREE.TextureLoader().load(page.textureUrl);
-      texture.flipY = false;
-      texture.encoding = THREE.sRGBEncoding;
-      return texture;
-    });
-  }, []);
+  // const imageTextures = useMemo(() => {
+  //   return pages.map((page) => {
+  //     const texture = new THREE.TextureLoader().load(page.textureUrl);
+  //     texture.flipY = false;
+  //     texture.encoding = THREE.sRGBEncoding;
+  //     return texture;
+  //   });
+  // }, []);
 
-  // const image1 = useTexture("/project.png");
-  // const image2 = useTexture("/project1.webp");
-  // image1.flipY = false;
-  // image1.encoding = THREE.sRGBEncoding;
+  const urls = pages.map((page) => page.textureUrl);
+
+  const imageTextures = useTexture(urls);
+
+  imageTextures.forEach((tex) => {
+    tex.flipY = false;
+    tex.encoding = THREE.sRGBEncoding;
+  });
 
   const screenMaterial = useMemo(() => {
     return new THREE.ShaderMaterial({

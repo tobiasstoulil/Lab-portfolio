@@ -118,7 +118,7 @@ const Model = () => {
     return new THREE.MeshMatcapMaterial({ matcap: matcapTexture });
   }, []);
 
-  const smileTexture = useTexture("/faceText.png");
+  const smileTexture = useTexture("/faceText.webp");
   smileTexture.flipY = false;
   smileTexture.encoding = THREE.sRGBEncoding;
 
@@ -250,10 +250,10 @@ const Model = () => {
           // console.log(camera);
 
           gsap.from(camera, {
-            zoom: camera.zoom + 15,
-            ease: "power2.inOut",
+            zoom: camera.zoom + 20,
+            ease: "hop",
             delay: 0,
-            duration: 1.5,
+            duration: 1,
 
             onUpdate: () => {
               // console.log(cameraRef.current.zoom, initialZoom.current);
