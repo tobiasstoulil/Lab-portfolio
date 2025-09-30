@@ -72,7 +72,7 @@ export default function Scene() {
         zoom={200}
       />
 
-      <EffectComposer multisampling={2} autoClear={false}>
+      <EffectComposer multisampling={3} autoClear={false}>
         <CustomEfComponent />
         <Bloom
           luminanceThreshold={5}
