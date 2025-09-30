@@ -59,7 +59,7 @@ const Model = () => {
     },
   });
 
-  const bakedProps = useTexture("/baked.jpg");
+  const bakedProps = useTexture("/baked.webp");
   bakedProps.flipY = false;
   bakedProps.encoding = THREE.sRGBEncoding;
   // bakedPowerTexture.anisotropy = 16;

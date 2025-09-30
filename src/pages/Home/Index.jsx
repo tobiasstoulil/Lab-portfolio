@@ -76,7 +76,7 @@ const HomePage = () => {
         const tl = gsap.timeline({
           defaults: {
             ease: "hop",
-            delay: 0.5,
+            delay: 0.375,
             onComplete: () => {},
           },
         });
