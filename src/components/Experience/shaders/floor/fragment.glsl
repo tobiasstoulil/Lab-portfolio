@@ -41,7 +41,7 @@ void main()
 
   vec3 colMultiply = mix(uColor1, uColor2, uProgress);
 
-  vec3 powerCol = blendDarken(bakedCol, powerFac * colMultiply * 5., 0.275);
+  vec3 powerCol = blendDarken(bakedCol, powerFac * colMultiply * 10., 0.475);
 
   vec3 finalCol = mix(bakedCol, powerCol, powerFac);
 

@@ -60,11 +60,11 @@ const Index = () => {
     <div
       ref={loaderRef}
       style={{ opacity: 0.9875 }}
-      className="fixed z-[60] inset-0 h-[100svh] w-full flex justify-center items-center bg-white"
+      className="fixed z-[60] inset-0 h-[100svh] w-full flex justify-center items-center bg-white pointer-events-none"
     >
       <div
         ref={textContainerRef}
-        className="flex flex-row items-center justify-between gap-3 overflow-hidden"
+        className="flex flex-row items-center justify-between gap-3 overflow-hidden font-main !font-[400]"
       >
         <span>{progress.toFixed(0)}</span>
       </div>

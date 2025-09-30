@@ -39,13 +39,15 @@ const Swapper = () => {
 
   const setIndex = useStats((state) => state.setIndex);
 
+  const [isMobile, setIsMobile] = useState(false);
+
   useEffect(() => {
     const resize = () => {
       const width = window.innerWidth;
       if (width < 768) {
-        setIsHovered(true);
+        setIsMobile(true);
       } else {
-        setIsHovered(false);
+        setIsMobile(false);
       }
     };
     resize();
@@ -280,7 +282,7 @@ const Swapper = () => {
         }}
         animate={{
           width: isMenuOpen ? "232px" : "0px",
-          height: isMenuOpen ? "272px" : "0px",
+          height: isMenuOpen ? "100%" : "0px",
           opacity: isMenuOpen ? 1 : 0,
         }}
         transition={{
@@ -310,7 +312,11 @@ const Swapper = () => {
               className="select-none cursor-pointer bg-transparent hover:!bg-[#b1b1b12a] transition duration-100 ease-in-out px-2 py-2 rounded-[8px] text-black w-full flex flex-row justify-between items-center"
               animate={{
                 background:
-                  i === index ? (isMenuOpen ? "#7979792a" : "#fff") : "#fff",
+                  i === index
+                    ? isMenuOpen
+                      ? "rgba(121,121,121,0.16)"
+                      : "rgba(0,0,0,0)"
+                    : "rgba(0,0,0,0)",
                 opacity: isMenuOpen ? 1 : 0,
               }}
               transition={{
@@ -363,7 +369,7 @@ const Swapper = () => {
           >
             {/*  */}
             <div className="w-fit h-full flex flex-col gap-[4px] items-start justify-center">
-              <div className="flex items-start justify-center relative min-w-fit w-fit text-nowrap select-none pointer-events-auto text-[0.875rem] text-black !font-[700] uppercase">
+              <div className="flex items-start justify-center relative min-w-fit w-fit text-nowrap select-none pointer-events-auto text-[0.775rem] md:text-[0.875rem] text-black !font-[700] uppercase">
                 <p
                   ref={liveTextRef}
                   className="relative h-full w-full min-w-fit flex items-start justify-center text-nowrap"
@@ -426,7 +432,7 @@ const Swapper = () => {
           // scaleY: 0.925,
         }}
         animate={{
-          width: isHovered ? "264px" : "232px",
+          width: isHovered ? (isMobile ? "232px" : "264px") : "232px",
           // scaleX: isHovered ? 1 : 0.925,
           // scaleY: isHovered ? 1 : 0.925,
         }}
@@ -435,7 +441,7 @@ const Swapper = () => {
           delay: isHovered ? 0 : 0.05,
           ease: [0.4, 0, 0.2, 1],
         }}
-        className="scale-100 md:scale-100 pointer-events-auto font-main w-[264px]"
+        className="scale-100 md:scale-100 pointer-events-auto font-main w-[232px] md:w-[264px]"
       >
         <div
           className="pointer-events-none bg-[#fff] rounded-[330px] flex flex-row justify-between items-center gap-3 pl-0 pr-8 py-0 overflow-hidden
@@ -538,7 +544,7 @@ const Swapper = () => {
               opacity: 0,
             }}
             animate={{
-              opacity: isHovered ? 1 : 0,
+              opacity: isHovered ? 1 : isMobile ? 1 : 0,
             }}
             transition={{
               duration: isHovered ? 0.5 : 0.25,
@@ -552,7 +558,7 @@ const Swapper = () => {
 
           {/*  */}
           <div className="w-full h-full flex flex-col gap-[4px] min-w-fit items-start justify-center">
-            <div className="flex items-start justify-center relative min-w-fit w-fit text-nowrap select-none pointer-events-auto text-[0.875rem] text-black !font-[700] uppercase">
+            <div className="flex items-start justify-center relative min-w-fit w-fit text-nowrap select-none pointer-events-auto text-[0.775rem] md:text-[0.875rem] text-black !font-[700] uppercase">
               <p
                 ref={titleRef1}
                 className="relative h-full w-full min-w-fit flex items-start justify-center text-nowrap"
