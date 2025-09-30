@@ -129,14 +129,14 @@ const HomePage = () => {
 
   return (
     <>
-      <Helmet>
+      {/* <Helmet>
         <title>Lab - Tobias Stoulil</title>
         <meta
           name="description"
           content="Playground of 3D experiments using webgl, three.js, Blender. Web projects and 3D renders."
         />
         <link rel="canonical" href="https://www.tobiasstoulil.com/" />
-      </Helmet>
+      </Helmet> */}
 
       <div
         ref={pageRef}
