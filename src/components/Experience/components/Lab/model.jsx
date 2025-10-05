@@ -359,8 +359,8 @@ const Model = () => {
     const perpendicular = new THREE.Vector3(-directionXZ.z, 0, directionXZ.x);
 
     const mulFac = 1;
-    const amountX = 0.5 * mulFac;
-    const amountY = 0.25 * mulFac;
+    const amountX = 0.85 * mulFac;
+    const amountY = 0.45 * mulFac;
 
     const offsetX = amountX * mouse.current.x;
     const offsetY = amountY * -mouse.current.y;

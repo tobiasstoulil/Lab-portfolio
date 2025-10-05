@@ -16,7 +16,7 @@ const Swapper = () => {
   const increaseIndex = useStats.getState().increaseIndex;
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
+  const [isHovered, setIsHovered] = useState(true);
 
   useClickTrigger(() => setIsMenuOpen(() => false));
 
@@ -30,6 +30,7 @@ const Swapper = () => {
   const titleRef1 = useRef(null);
   const titleRef2 = useRef(null);
   const arrowIconRef = useRef(null);
+  const menuRef = useRef(null);
 
   const pages = dataPages[0].items;
   const countRef = useRef(0);
@@ -69,7 +70,7 @@ const Swapper = () => {
         }
         increaseIndex();
       }
-    }, 5000);
+    }, 10000);
 
     return () => {
       clearInterval(indexInterval);
@@ -106,6 +107,10 @@ const Swapper = () => {
     gsap.set(liveRef.current, {
       opacity: 0,
     });
+    gsap.set(menuRef.current, {
+      opacity: 0,
+    });
+
     const unsubscribe = useStats.subscribe(
       (state) => state.scopeAnim,
       (value, prevValue) => {
@@ -113,7 +118,7 @@ const Swapper = () => {
         const tl = gsap.timeline({
           defaults: {
             ease: "hop",
-            delay: 2,
+            delay: 1.475,
             onComplete: () => {
               isTransitioning.current = false;
             },
@@ -124,17 +129,25 @@ const Swapper = () => {
           swapperRef.current,
           {
             opacity: 1,
-            duration: 0.75,
+            duration: 0.675,
           },
-          0.125
+          0
+        );
+        tl.to(
+          menuRef.current,
+          {
+            opacity: 1,
+            duration: 0.675,
+          },
+          0.25
         );
         tl.to(
           liveRef.current,
           {
             opacity: 1,
-            duration: 0.75,
+            duration: 0.675,
           },
-          0.3
+          0.125
         );
 
         tl.to(
@@ -281,13 +294,13 @@ const Swapper = () => {
           overscrollBehavior: "none",
         }}
         animate={{
-          width: isMenuOpen ? "232px" : "0px",
-          height: isMenuOpen ? "100%" : "0px",
+          width: isMenuOpen ? "232px" : 0,
+          height: isMenuOpen ? "100%" : 0,
           opacity: isMenuOpen ? 1 : 0,
         }}
         transition={{
-          duration: 0.5,
-          delay: isMenuOpen ? 0.25 : 0.625,
+          duration: 0.325,
+          delay: isMenuOpen ? 0.25 : 0.425,
           ease: "easeInOut",
         }}
         className="scale-100 md:scale-100 pointer-events-auto font-main bg-white rounded-[16px] px-2 py-2 flex flex-col gap-0 border-[4px] border-[#b1b1b141]"
@@ -328,8 +341,8 @@ const Swapper = () => {
                   duration: 0.5,
                   ease: "easeInOut",
                   delay: isMenuOpen
-                    ? 0.625 + i * 0.05
-                    : (pages.length - i) * 0.05,
+                    ? 0.35 + i * 0.05
+                    : (pages.length - i) * 0.01,
                 },
               }}
             >
@@ -342,7 +355,70 @@ const Swapper = () => {
       </motion.div>
 
       {/*  */}
-      <div className="w-fit flex flex-row justify-end gap-2.5 items-center">
+      <div className="w-fit flex flex-row justify-end gap-[60px] md:gap-16 items-center">
+        <div
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          ref={menuRef}
+          style={{ transformOrigin: "center center", opacity: 0 }}
+          className="rotate-[90deg] pointer-events-auto bg-[#fff] rounded-[330px] flex flex-row justify-center items-center overflow-hidden
+      border-[4px] border-[#b1b1b141] shadow-2xl"
+        >
+          <motion.div
+            whileHover={{ scale: 0.925 }}
+            transition={{ type: "spring", stiffness: 200, damping: 30 }}
+            className="cursor-pointer pointer-events-auto relative h-[44px] aspect-square rounded-full bg-[#000]"
+          >
+            <motion.div
+              style={{
+                willChange: "transform",
+                transformOrigin: "center center",
+                y: "-50%",
+              }}
+              animate={{
+                x: isMenuOpen ? "calc(-50% + 2px)" : "-50%",
+              }}
+              transition={{
+                duration: isMenuOpen ? 0.5 : 0.3,
+                delay: isMenuOpen ? 0.125 : 0.125,
+                ease: [0.55, 0, 0.3, 1],
+              }}
+              className="absolute h-[4px] top-[calc(50%-7px)] left-1/2 aspect-square bg-[#fff] rounded-full"
+            />
+            <motion.div
+              style={{
+                willChange: "transform",
+                transformOrigin: "center center",
+                y: "-50%",
+              }}
+              animate={{
+                x: isMenuOpen ? "calc(-50% - 4px)" : "-50%",
+              }}
+              transition={{
+                duration: isMenuOpen ? 0.5 : 0.3,
+                delay: isMenuOpen ? 0.125 : 0.125,
+                ease: [0.55, 0, 0.3, 1],
+              }}
+              className="absolute h-[4px] top-1/2 left-1/2 aspect-square bg-[#fff] rounded-full"
+            />
+            <motion.div
+              style={{
+                willChange: "transform",
+                transformOrigin: "center center",
+                y: "-50%",
+              }}
+              animate={{
+                x: isMenuOpen ? "calc(-50% + 2px)" : "-50%",
+              }}
+              transition={{
+                duration: isMenuOpen ? 0.5 : 0.3,
+                delay: isMenuOpen ? 0.125 : 0.125,
+                ease: [0.55, 0, 0.3, 1],
+              }}
+              className="absolute h-[4px] top-[calc(50%+7px)] left-1/2 aspect-square bg-[#fff] rounded-full"
+            />
+          </motion.div>
+        </div>
+
         <motion.div
           style={{
             opacity: 1,
@@ -363,22 +439,10 @@ const Swapper = () => {
               cursor: "default",
               overscrollBehavior: "none",
             }}
-            className="absolute right-0 bottom-0 pointer-events-auto bg-[#fff] rounded-[330px] flex flex-row justify-end items-center gap-3 pl-5 pr-0 py-0 overflow-hidden
+            className="absolute right-0 bottom-1/2 translate-y-1/2 pointer-events-auto bg-[#fff] rounded-[330px] flex flex-row justify-end items-center gap-3 pl-0 pr-6 py-0 overflow-hidden
       border-[4px] border-[#b1b1b141] shadow-2xl 
       "
           >
-            {/*  */}
-            <div className="w-fit h-full flex flex-col gap-[4px] items-start justify-center">
-              <div className="flex items-start justify-center relative min-w-fit w-fit text-nowrap select-none pointer-events-auto text-[0.775rem] md:text-[0.875rem] text-black !font-[700] uppercase">
-                <p
-                  ref={liveTextRef}
-                  className="relative h-full w-full min-w-fit flex items-start justify-center text-nowrap"
-                >
-                  live
-                </p>
-              </div>
-            </div>
-
             {/*  */}
             <div className="relative cursor-pointer h-[44px] aspect-square bg-transparent rounded-full flex justify-center items-center">
               <motion.div
@@ -403,6 +467,17 @@ const Swapper = () => {
                 className="pointer-events-none -rotate-45"
               />
             </div>
+            {/*  */}
+            <div className="w-fit h-full flex flex-col gap-[4px] items-start justify-center">
+              <div className="flex items-start justify-center relative min-w-fit w-fit text-nowrap select-none pointer-events-auto text-[0.775rem] md:text-[0.875rem] text-black !font-[700] uppercase">
+                <p
+                  ref={liveTextRef}
+                  className="relative h-full w-full min-w-fit flex items-start justify-center text-nowrap"
+                >
+                  live
+                </p>
+              </div>
+            </div>
           </div>
         </motion.div>
       </div>
@@ -411,13 +486,12 @@ const Swapper = () => {
 
       <motion.div
         ref={swapperRef}
-        onMouseEnter={() => {
-          setIsHovered(true);
-        }}
-        onMouseLeave={() => {
-          setIsHovered(false);
-          // hoverEndTransition();
-        }}
+        // onMouseEnter={() => {
+        //   setIsHovered(true);
+        // }}
+        // onMouseLeave={() => {
+        //   setIsHovered(false);
+        // }}
         style={{
           opacity: 0,
           willChange: "transform",
@@ -444,11 +518,11 @@ const Swapper = () => {
         className="scale-100 md:scale-100 pointer-events-auto font-main w-[232px] md:w-[264px]"
       >
         <div
-          className="pointer-events-none bg-[#fff] rounded-[330px] flex flex-row justify-between items-center gap-3 pl-0 pr-8 py-0 overflow-hidden
+          className="pointer-events-none bg-[#fff] rounded-[330px] flex flex-row justify-between items-center gap-3 pl-0 pr-0 py-0 overflow-hidden
       border-[4px] border-[#b1b1b141] shadow-2xl 
       "
         >
-          <div
+          {/* <div
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="rotate-[90deg]"
           >
@@ -506,9 +580,9 @@ const Swapper = () => {
                 className="absolute h-[4px] top-[calc(50%+7px)] left-1/2 aspect-square bg-[#fff] rounded-full"
               />
             </motion.div>
-          </div>
+          </div> */}
 
-          <motion.div
+          {/* <motion.div
             onClick={() => {
               // console.log(countRef.current, pages.length);
 
@@ -554,7 +628,52 @@ const Swapper = () => {
             className="scale-[0.8] rotate-[-90deg] pointer-events-auto z-10 cursor-pointer absolute top-1/2 right-2 -translate-x-1/2 -translate-y-1/2"
           >
             <SquareArrowLeftIcon />
-          </motion.div>
+          </motion.div> */}
+
+          <div className="pointer-events-auto relative cursor-pointer h-[44px] aspect-square bg-transparent rounded-full flex justify-center items-center">
+            <motion.div
+              style={{
+                willChange: "transform",
+                // boxShadow: "0 2px 12px rgba(0, 0, 0, 0.175)",
+              }}
+              onClick={() => {
+                // console.log(countRef.current, pages.length);
+
+                if (delayRef.current) {
+                  return;
+                }
+
+                delayRef.current = true;
+                isTransitioning.current = true;
+
+                // console.log(countRef.current, pages.length);
+
+                if (index > 0) {
+                  setIndex(index - 1);
+                } else {
+                  setIndex(pages.length - 1);
+
+                  countRef.current = 0;
+                }
+
+                setTimeout(() => {
+                  delayRef.current = false;
+                }, 1500);
+              }}
+              whileHover={{ scale: 0.925 }}
+              // onHoverStart={() => arrowIconRef.current?.scaleInAnimation()}
+              // onHoverEnd={() => {
+              //   arrowIconRef.current?.scaleOutAnimation();
+              // }}
+              transition={{ type: "spring", stiffness: 200, damping: 30 }}
+              className="absolute inset-0 h-[44px] aspect-square bg-black rounded-full"
+            ></motion.div>
+            <ArrowStraight
+              ref={arrowIconRef}
+              fill="#fff"
+              className="pointer-events-none rotate-180"
+            />
+          </div>
 
           {/*  */}
           <div className="w-full h-full flex flex-col gap-[4px] min-w-fit items-start justify-center">
@@ -572,6 +691,53 @@ const Swapper = () => {
                 TobiasStoulil
               </p>
             </div>
+          </div>
+
+          {/*  */}
+
+          <div className="pointer-events-auto relative cursor-pointer h-[44px] aspect-square bg-transparent rounded-full flex justify-center items-center">
+            <motion.div
+              style={{
+                willChange: "transform",
+                // boxShadow: "0 2px 12px rgba(0, 0, 0, 0.175)",
+              }}
+              onClick={() => {
+                // console.log(countRef.current, pages.length);
+
+                if (delayRef.current) {
+                  return;
+                }
+
+                delayRef.current = true;
+                isTransitioning.current = true;
+                countRef.current = countRef.current + 1;
+                // console.log(countRef.current, pages.length);
+
+                if (countRef.current < pages.length) {
+                  increaseIndex();
+                } else {
+                  setIndex(0);
+
+                  countRef.current = 0;
+                }
+
+                setTimeout(() => {
+                  delayRef.current = false;
+                }, 1500);
+              }}
+              whileHover={{ scale: 0.925 }}
+              // onHoverStart={() => arrowIconRef.current?.scaleInAnimation()}
+              // onHoverEnd={() => {
+              //   arrowIconRef.current?.scaleOutAnimation();
+              // }}
+              transition={{ type: "spring", stiffness: 200, damping: 30 }}
+              className="absolute inset-0 h-[44px] aspect-square bg-black rounded-full"
+            ></motion.div>
+            <ArrowStraight
+              ref={arrowIconRef}
+              fill="#fff"
+              className="pointer-events-none -rotate-0"
+            />
           </div>
         </div>
       </motion.div>

@@ -176,6 +176,7 @@ const Screen = () => {
     const intersects = raycaster.intersectObjects(pivot.current.children, true);
     // console.log(intersects);
 
+    return;
     if (intersects.length > 0 && !isHovering.current) {
       // document.body.style.cursor = "pointer";
 

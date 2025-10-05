@@ -85,18 +85,18 @@ const HomePage = () => {
           authorRef.current,
           {
             opacity: 1,
-            duration: 0.75,
+            duration: 0.675,
           },
-          1.75
+          1.725
         );
 
         tl.to(
           headerRef.current,
           {
             opacity: 1,
-            duration: 0.75,
+            duration: 0.675,
           },
-          1.125
+          0.725
         );
 
         tl.to(
